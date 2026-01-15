@@ -1,0 +1,16 @@
+name: US30_live_feed
+on:
+  schedule:
+    - cron: '* * * * 1-5'   # every minute Mon-Fri
+  workflow_dispatch:
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - run: python fmp_poller.py
+        env:
+          FMP_KEY: ${{ secrets.FMP_KEY }}
